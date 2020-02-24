@@ -3,6 +3,8 @@ import axios from 'axios';
 import { ThunkAction } from 'redux-thunk';
 import { ActionCreator } from 'redux';
 import { Dispatch, Reducer } from 'react';
+import { apiService } from '../services/apiService';
+import { apiMiddleware } from '../middlewares/apiMiddleware';
 
 export const GET_TODO_LIST = 'GET_TODO_LIST';
 
@@ -43,10 +45,9 @@ export const jsonAxios = axios.create({
 export const getTodoList: ActionCreator<ThunkAction<Promise<GetTodoListAction>, ITodo[], null, GetTodoListAction>> = () =>{
   return async (dispatch: Dispatch<GetTodoListAction>) =>{
 
+    const myApiService = new apiService();
+    const todos = await apiMiddleware<ITodo[]>(async () => await myApiService.getTodos()) as ITodo[];
 
-    const todos = await jsonAxios.get<ITodo[]>("/todos").then( (res) =>{
-      return res.data;
-    })
     const getTodosAction: GetTodoListAction = {
       todos,
       type: GET_TODO_LIST
