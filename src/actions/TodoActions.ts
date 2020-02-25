@@ -7,6 +7,10 @@ import { apiService } from '../services/apiService';
 import { apiMiddleware } from '../middlewares/apiMiddleware';
 
 export const GET_TODO_LIST = 'GET_TODO_LIST';
+export const ADD_TODO = 'ADD_TODO';
+export const DELETE_TODO = 'DELETE_TODO';
+export const CHANGE_STATUS = 'CHANGE_STATUS';
+export const UPDATE_TODO = 'UPDATE_TODO';
 
 export interface ITodo {
   userId: number,
@@ -26,9 +30,25 @@ export interface IAppState {
 export interface GetTodoListAction extends Action<"GET_TODO_LIST"> {
   todos: ITodo[];
 }
+export interface AddTodoAction extends Action<"ADD_TODO"> {
+  todos: ITodo;
+}
+export interface DeleteTodoAction extends Action<"DELETE_TODO"> {
+  todos: ITodo;
+}
+export interface ChangeStatusAction extends Action<"CHANGE_STATUS"> {
+  todos: ITodo;
+}
+export interface UpdateTodoAction extends Action<'UPDATE_TODO'> {
+  todos: ITodo;
+}
 
-
-export type TodoActions = GetTodoListAction;
+export type TodoActions =
+  | GetTodoListAction
+  | AddTodoAction
+  | DeleteTodoAction
+  | ChangeStatusAction
+  | UpdateTodoAction;
 
 
 export const jsonAxios = axios.create({
@@ -59,6 +79,27 @@ export const getTodoList: ActionCreator<ThunkAction<Promise<GetTodoListAction>, 
   };
 };
 
+export const addedTodo = (data: ITodo[]) => ({
+  todos: data,
+  type: ADD_TODO
+})
+
+export const deleteTodo = (id: number) => ({
+  todos: id,
+  type: DELETE_TODO
+})
+
+export const changeStatus = (completed: boolean) => ({
+  todos: completed,
+  type: CHANGE_STATUS
+})
+
+export const updateTodo = (title: string) => ({
+  todos: title,
+  type: UPDATE_TODO
+});
+
+
 const initialState: ITodolistState = {
   todos: []
 };
@@ -70,9 +111,30 @@ export const TodoReducer: Reducer<ITodolistState, TodoActions> = (
 ) => {
   switch (action.type) {
     case GET_TODO_LIST:
+    action.todos.map(item => item.id)
       return {
         ...state,
         todos: action.todos
+      }
+    case ADD_TODO: 
+    console.log("add")
+      return {
+        ...state,
+        todos: [...state.todos, action.todos]
+      }
+    case DELETE_TODO:
+      console.log('delete')
+      return {
+        todos: state.todos.filter(items => items.id !== action.todos.id)
+      }
+    case CHANGE_STATUS:
+      return {
+        todos: state.todos.map(item => (item.id === action.todos.id ? { ...item, completed: !action.todos.completed } : item))
+      }
+    case UPDATE_TODO:
+      console.log('update')
+      return {
+        todos: state.todos.map(item => (item.id === action.todos.id ?  {...item, title: action.todos.title } : item))
       }
     default:
       return state;
