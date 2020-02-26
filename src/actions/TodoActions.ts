@@ -37,7 +37,8 @@ export interface DeleteTodoAction extends Action<"DELETE_TODO"> {
   id: number;
 }
 export interface ChangeStatusAction extends Action<"CHANGE_STATUS"> {
-  todos: ITodo;
+  id: number;
+  completed: boolean;
 }
 export interface UpdateTodoAction extends Action<'UPDATE_TODO'> {
   todos: ITodo;
@@ -78,7 +79,7 @@ export const getTodoList: ActionCreator<ThunkAction<Promise<GetTodoListAction>, 
   };
 };
 
-export const addedTodo = (data: ITodo[]) => ({
+export const addedTodo = (data: ITodo) => ({
   todos: data,
   type: ADD_TODO
 })
@@ -88,8 +89,9 @@ export const deleteTodo = (id: number) => ({
   type: DELETE_TODO
 })
 
-export const changeStatus = (completed: boolean) => ({
-  todos: completed,
+export const changeStatus = (id: number, completed: boolean) => ({
+  id,
+  completed,
   type: CHANGE_STATUS
 })
 
@@ -127,7 +129,7 @@ export const TodoReducer: Reducer<ITodolistState, TodoActions> = (
       }
     case CHANGE_STATUS:
       return {
-        todos: state.todos.map(item => (item.id === action.todos.id ? { ...item, completed: !action.todos.completed } : item))
+        todos: state.todos.map(item => (item.id === action.id ? { ...item, completed: action.completed } : item))
       }
     case UPDATE_TODO:
       console.log('update')

@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from 'axios'; 
 import { ITodo } from '../actions/TodoActions';
-import { apiMiddleware } from '../middlewares/apiMiddleware';
 
 export class apiService {
 
@@ -19,6 +18,7 @@ export class apiService {
 
   async getTodos(): Promise<ITodo[]>{
     return await this.axios.get<ITodo[]>("/todos").then( (res) =>{
+      
         return res.data;
       });
   }

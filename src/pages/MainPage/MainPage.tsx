@@ -1,7 +1,7 @@
 import React, { useEffect, FC, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { getTodoList, GetTodoListAction, ITodo, IAppState, addedTodo, deleteTodo, changeStatus , updateTodo, ITodolistState } from '../../actions/TodoActions';
+import { getTodoList, GetTodoListAction, ITodo, IAppState, addedTodo, deleteTodo, changeStatus , updateTodo } from '../../actions/TodoActions';
 import styled from 'styled-components';
 import { myTheme } from '../../styles/theme';
 import AddTodoForm from './Forms/AddForm';
@@ -9,6 +9,7 @@ import EditForm from './Forms/EditForm';
 import CustomSnackbar from '../../components/Snackbar';
 import { showSuccessSnackbar, showErrorSnackbar } from '../../actions/SnackbarActions';
 import Button from '@material-ui/core/Button';
+import {MainPageService} from '../../services/MainPageService';
 
 const CompletedItems = styled.div`
 color: ${myTheme.colors.main};
@@ -51,14 +52,15 @@ interface IProps extends RouteComponentProps {
   todos: ITodo[];
   addedTodo: any;
   deleteTodo: (item: number) => void;
-  changeStatus: any;
-  updateTodo: any;
+  changeStatus: (id: number, completed: boolean) => void;
+  updateTodo: (values: any) => void;
 }
 const MainPage: FC<IProps> = ({ getTodoList, todos, addedTodo, deleteTodo, changeStatus, updateTodo }) => {
 
   const [isEdit, setIsEdit] = useState(false);
   const [todoId, setTodoId] = useState(0)
   const [isAdd, setIsAdd] = useState(false);
+
   const dispatch = useDispatch()
 
     useEffect(() => {
@@ -68,46 +70,29 @@ const MainPage: FC<IProps> = ({ getTodoList, todos, addedTodo, deleteTodo, chang
   const uncompletedList = todos.filter(item => item.completed === false)
   const completedItems = todos.filter(item => item.completed === true)
 
-  const addSubmit = (values: any): void => {
-      addedTodo({
-        userId: 1,
-        id: todos.length + 1,
-        title: values.title,
-        completed: false
-      });
-      dispatch(showSuccessSnackbar('Dodałeś nowe zadanie Panie!'))
-      setIsAdd(!isAdd)
-    };
-
-  const editSubmit = (values: any): void => {
-      updateTodo({
-        id: todoId,
-        title: values.title
-      }); 
-      dispatch(showSuccessSnackbar('Zedytowałeś zadanie Panie!'))
-      setIsEdit(!isEdit);
-    };
-
-  const deleteTodoItem = (item: number): void => {
-      dispatch(showErrorSnackbar('Usunąłeś zadanie Panie!'))
-      deleteTodo(item);
-  }
+  const mainPageService = new MainPageService(dispatch, todos, deleteTodo, addedTodo, updateTodo);
 
   return (
     <div>
       <CustomSnackbar/>
       {!isEdit ?
       <div>
-        {isAdd ? <AddTodoForm onSubmit={addSubmit} /> :  <Button variant="contained" onClick={() => setIsAdd(!isAdd)}>Dodaj nowe zadanie</Button>}
+        {isAdd ? <AddTodoForm onSubmit={(values) => {
+          mainPageService.addSubmit(values);
+          setIsAdd(!isAdd);
+        }} /> :  <Button variant="contained" onClick={() => setIsAdd(!isAdd)}>Dodaj nowe zadanie</Button>}
         <Grid>
           <div>
             {uncompletedList.map(item => (
               <UnCompletedItems key={item.id}>
                 <p onClick={() => {
-                  changeStatus(item)
+                  changeStatus(item.id, item.completed)
                   dispatch(showSuccessSnackbar('Zmieniłeś status zadania na zakończone Panie!'))
                   }}>{item.title}</p>
-                <p onClick={() => deleteTodoItem(item.id)}>X</p>
+                <p onClick={() => mainPageService.deleteTodoItem(item.id)}>X</p>
+                <p onClick={() => {
+                  setIsEdit(!isEdit)
+                  setTodoId(item.id)}}>Edit</p>
               </UnCompletedItems>
             ))}
           </div>
@@ -116,10 +101,10 @@ const MainPage: FC<IProps> = ({ getTodoList, todos, addedTodo, deleteTodo, chang
             return (
               <CompletedItems key={item.id}>
                 <p onClick={() => {
-                  changeStatus(item)
+                  changeStatus(item.id, item.completed)
                   dispatch(showErrorSnackbar('Zmieniłeś status zadania na niezakończone Panie!'))
                   }}>{item.title}</p>
-                <p onClick={() => {deleteTodoItem(item.id)}}>X</p>
+                <p onClick={() => {mainPageService.deleteTodoItem(item.id)}}>X</p>
                 <p onClick={() => {
                   setIsEdit(!isEdit)
                   setTodoId(item.id)}}>Edit</p>
@@ -128,7 +113,10 @@ const MainPage: FC<IProps> = ({ getTodoList, todos, addedTodo, deleteTodo, chang
             })}
           </div>
         </Grid>
-      </div> : <EditForm onSubmit={editSubmit} />}
+      </div> : <EditForm onSubmit={
+            (values) => {mainPageService.editSubmit(values, todoId)
+            setIsEdit(!isEdit);
+      }} />}
     </div>
   );
 };
