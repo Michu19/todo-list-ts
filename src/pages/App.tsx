@@ -6,12 +6,13 @@ import MainPage from './MainPage/MainPage';
 
 
 
+
 const App = () => {   
     return ( 
         <Suspense fallback={<Loader/>}>
             <Router>
                 <div>
-                    <Route exact path="/" component={MainPage}/>                    
+                    <Route exact path="/" component={MainPage}/>
                 </div>
             </Router>
         </Suspense>       

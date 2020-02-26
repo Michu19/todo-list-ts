@@ -18,6 +18,10 @@ declare module 'styled-components' {
       huge: string;
       little: string;
     }
-    gridCenterItems: string
+    gridCenterItems: string,
+    shadow: string,
+    border: {
+      solid: string
+    }
   };
 }

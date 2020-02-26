@@ -34,7 +34,7 @@ export interface AddTodoAction extends Action<"ADD_TODO"> {
   todos: ITodo;
 }
 export interface DeleteTodoAction extends Action<"DELETE_TODO"> {
-  todos: ITodo;
+  id: number;
 }
 export interface ChangeStatusAction extends Action<"CHANGE_STATUS"> {
   todos: ITodo;
@@ -72,7 +72,6 @@ export const getTodoList: ActionCreator<ThunkAction<Promise<GetTodoListAction>, 
       todos,
       type: GET_TODO_LIST
     }
-
     dispatch(getTodosAction);
 
     return getTodosAction;
@@ -85,7 +84,7 @@ export const addedTodo = (data: ITodo[]) => ({
 })
 
 export const deleteTodo = (id: number) => ({
-  todos: id,
+  id,
   type: DELETE_TODO
 })
 
@@ -111,7 +110,6 @@ export const TodoReducer: Reducer<ITodolistState, TodoActions> = (
 ) => {
   switch (action.type) {
     case GET_TODO_LIST:
-    action.todos.map(item => item.id)
       return {
         ...state,
         todos: action.todos
@@ -123,9 +121,9 @@ export const TodoReducer: Reducer<ITodolistState, TodoActions> = (
         todos: [...state.todos, action.todos]
       }
     case DELETE_TODO:
-      console.log('delete')
+      console.log(action.id)
       return {
-        todos: state.todos.filter(items => items.id !== action.todos.id)
+        todos: state.todos.filter(items => items.id !== action.id)
       }
     case CHANGE_STATUS:
       return {
