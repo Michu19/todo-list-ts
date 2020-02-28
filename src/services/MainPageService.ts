@@ -21,7 +21,7 @@ export class MainPageService {
   }
 
   deleteTodoItem = (item: number): void => {
-    this.dispatch(showSuccessSnackbar("Udało Ci się usunąć!"));
+    this.dispatch(showSuccessSnackbar("Zadanie zostało usunięte Panie!"));
     this.deleteTodo(item);
   };
 
@@ -36,6 +36,7 @@ export class MainPageService {
   }
 
   editSubmit = (values: any, todoId: number): void => {
+    this.dispatch(showSuccessSnackbar(`Nazwa zadania została zmieniona na: ${values.title}`))
     this.updateTodo({
       id: todoId,
       title: values.title

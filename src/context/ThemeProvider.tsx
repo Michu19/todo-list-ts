@@ -1,16 +1,15 @@
 import React from 'react';
 import ThemeContext, { themes, Theme } from './ThemeContext';
-import ToggleThemeButton from '../components/ToogleThemeButton';
 
 interface State {
   theme: Theme;
 }
 export class ThemeProvider extends React.Component<{}, State> {
-  readonly state: State = { theme: themes.light };
+  readonly state: State = { theme: themes.dark };
 
   toggleTheme = () => {
     this.setState(state => ({
-      theme: state.theme === themes.light ? themes.dark : themes.light,
+      theme: state.theme === themes.dark ? themes.light : themes.dark,
     }));
   }
 
@@ -19,7 +18,7 @@ export class ThemeProvider extends React.Component<{}, State> {
     const { toggleTheme } = this;
     return (
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <ToggleThemeButton />
+        {this.props.children}
       </ThemeContext.Provider>
     );
   }

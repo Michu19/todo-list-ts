@@ -4,7 +4,6 @@ import { ThunkAction } from 'redux-thunk';
 import { ActionCreator } from 'redux';
 import { Dispatch, Reducer } from 'react';
 import { apiService } from '../services/apiService';
-import { apiMiddleware } from '../middlewares/apiMiddleware';
 
 export const GET_TODO_LIST = 'GET_TODO_LIST';
 export const ADD_TODO = 'ADD_TODO';
@@ -37,7 +36,7 @@ export interface DeleteTodoAction extends Action<"DELETE_TODO"> {
   id: number;
 }
 export interface ChangeStatusAction extends Action<"CHANGE_STATUS"> {
-  id: number;
+  id: number,
   completed: boolean;
 }
 export interface UpdateTodoAction extends Action<'UPDATE_TODO'> {
@@ -67,7 +66,7 @@ export const getTodoList: ActionCreator<ThunkAction<Promise<GetTodoListAction>, 
   return async (dispatch: Dispatch<GetTodoListAction>) =>{
 
     const myApiService = new apiService();
-    const todos = await apiMiddleware<ITodo[]>(async () => await myApiService.getTodos()) as ITodo[];
+    const todos = await myApiService.getTodos() as ITodo[];
 
     const getTodosAction: GetTodoListAction = {
       todos,
@@ -128,8 +127,10 @@ export const TodoReducer: Reducer<ITodolistState, TodoActions> = (
         todos: state.todos.filter(items => items.id !== action.id)
       }
     case CHANGE_STATUS:
+      console.log(action.completed);
+      console.log(action.id);
       return {
-        todos: state.todos.map(item => (item.id === action.id ? { ...item, completed: action.completed } : item))
+        todos: state.todos.map(item => (item.id === action.id ? { ...item, completed: !action.completed } : item))
       }
     case UPDATE_TODO:
       console.log('update')

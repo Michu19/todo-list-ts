@@ -6,22 +6,59 @@ declare module 'styled-components' {
     colors: {
       main: string;
       secondary: string;
+      white: string;
+      gray: string;
+      brown: string;
     };
     display: {
       flex: string;
       grid: string;
+    };
+    margin: {
+      m10: string;
+      auto: string;
     }
-    margin: string;
     cursor: string;
     gridTemplateColumns: {
       high: string;
       huge: string;
       little: string;
-    }
-    gridCenterItems: string,
-    shadow: string,
+    };
+    wrap: string;
+    centerItems: string;
+    spaceBetween: string;
+    shadow: string;
     border: {
       solid: string
+    };
+    overflow: {
+      scroll: string;
+      hidden: string;
+      visible: string;
+      breakWord: string;
+    };
+    transform: {
+      scale: string;
+    }
+    transition: {
+      all05: string;
+    }
+    width: {
+      w3: string;
+      w60p: string;
+      w100: string;
+      w200: string;
+      w300: string;
+      w500: string;
+      w800: string;
+    }
+    height: {
+      h100: string;
+      h200: string;
+      h300: string;
+      h500: string;
+      h800: string;
+      h100vh: string;
     }
   };
 }

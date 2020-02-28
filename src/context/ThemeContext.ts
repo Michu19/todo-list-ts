@@ -10,15 +10,14 @@ type Themes = {
 export const themes: Themes = {
   dark: {
     color: 'black',
-    backgroundColor: 'white',
   },
   light: {
     color: 'white',
-    backgroundColor: 'black',
+    backgroundColor: 'black'
   },
 };
 
 export type ThemeContextProps = { theme: Theme; toggleTheme?: () => void };
-const ThemeContext = React.createContext<ThemeContextProps>({ theme: themes.light });
+const ThemeContext = React.createContext<ThemeContextProps>({ theme: themes.dark });
 
 export default ThemeContext;
