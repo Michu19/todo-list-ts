@@ -32,7 +32,7 @@ export default function AlertDialog(props: Props) {
 
   return (
     <div>
-      <DeleteIcon onClick={handleClickOpen} />
+      <DeleteIcon color="secondary" onClick={handleClickOpen} />
       <Dialog
         open={open}
         TransitionComponent={Transition}

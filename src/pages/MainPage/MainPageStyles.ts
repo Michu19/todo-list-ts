@@ -26,7 +26,6 @@ box-shadow: ${myTheme.shadow};
 justify-content: ${myTheme.spaceBetween};
 align-items: ${myTheme.centerItems};
 background: ${myTheme.colors.white};
-
 :hover {
 transform: ${myTheme.transform.scale.min};
 }
@@ -66,8 +65,8 @@ h1 {
   border-radius: ${myTheme.borderRadius};
   height: ${myTheme.height.h500};
   overflow-x: ${myTheme.overflow.hidden};
-  @media (max-width: 768px) {
-    height: ${myTheme.height.h300};
+@media (max-width: 768px) {
+    height: ${myTheme.height.h200};
 }
 ::-webkit-scrollbar {
   width: ${myTheme.width.w3};
