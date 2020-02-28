@@ -41,10 +41,10 @@ export default function AlertDialog(props: Props) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">Czy na pewno chcesz usunąć element: {props.title}?</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">Czy na pewno chcesz usunąć zadanie: {props.title}?</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Akcja spowoduje trwałe usunięcie elemntu.
+            Akcja spowoduje trwałe usunięcie zadania.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

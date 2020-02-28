@@ -18,6 +18,9 @@ declare module 'styled-components' {
       m10: string;
       auto: string;
     }
+    padding: {
+      p5: string;
+    }
     cursor: string;
     gridTemplateColumns: {
       high: string;
@@ -38,7 +41,11 @@ declare module 'styled-components' {
       breakWord: string;
     };
     transform: {
-      scale: string;
+      scale: {
+        min: string;
+        average: string;
+        max: string;
+      };
     }
     transition: {
       all05: string;
@@ -53,6 +60,7 @@ declare module 'styled-components' {
       w800: string;
     }
     height: {
+      h55: string;
       h100: string;
       h200: string;
       h300: string;

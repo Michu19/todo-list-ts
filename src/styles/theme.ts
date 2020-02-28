@@ -18,6 +18,9 @@ const myTheme: DefaultTheme = {
   border: {
     solid: '1px solid #000'
   },
+  padding: {
+    p5: '5px 21px'
+  },
   margin: {
     m10: '10px',
     auto: 'auto',
@@ -39,7 +42,11 @@ const myTheme: DefaultTheme = {
     breakWord: 'break-word',
   },
   transform: {
-    scale: "scale(1.03)"
+    scale: {
+      min: 'scale(1.03)',
+      average: 'scale(1.2)',
+      max: 'scale(2)',
+    },
   },
   transition: {
     all05: "all 0.5s"
@@ -54,6 +61,7 @@ const myTheme: DefaultTheme = {
     w800: '800px'
   },
   height: {
+    h55: '55px',
     h100: '100px',
     h200: '200px',
     h300: '300px',

@@ -13,6 +13,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import AlertDialog from '../../components/Dialog';
 import ThemeContext from '../../context/ThemeContext';
 import ToggleThemeButton from '../../components/ToogleThemeButton';
+import DoneIcon from '@material-ui/icons/Done';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 interface IProps extends RouteComponentProps {
   getTodoList: () => Promise<GetTodoListAction>;
@@ -21,7 +23,6 @@ interface IProps extends RouteComponentProps {
   deleteTodo: (item: number) => void;
   changeStatus: (id: number, completed: boolean) => void;
   updateTodo: (values: any) => void;
-  
 }
 const MainPage: FC<IProps> = ({ getTodoList, todos, addedTodo, deleteTodo, changeStatus, updateTodo }) => {
 
@@ -66,37 +67,44 @@ const MainPage: FC<IProps> = ({ getTodoList, todos, addedTodo, deleteTodo, chang
                   {uncompletedList.map(item => {
                     return (
                       <BoxItems id={item.title} style={theme} key={item.id}>
-                        <p onClick={() => {
-                          changeStatus(item.id, item.completed)
-                          dispatch(showSuccessSnackbar('Zmieniłeś status zadania na zakończone Panie!'))
-                          }}>{item.title}</p>
+                        <p>{item.title}</p>
                         <span>
-                        <p onClick={() => {
-                          setIsEdit(!isEdit)
-                          setTodoId(item.id)
-                          }}><EditIcon /></p>
-                        <AlertDialog title={item.title} agree={renderAgree(item.id)} disagree="Anuluj" />
+                          <div>
+                            <DoneIcon onClick={() => {
+                            changeStatus(item.id, item.completed)
+                            dispatch(showSuccessSnackbar('Zmieniłeś status zadania na zakończone Panie!'))
+                            }} />
+                          </div>
+                          <div onClick={() => {
+                            setIsEdit(!isEdit)
+                            setTodoId(item.id)
+                            }}><EditIcon />
+                            </div>
+                          <AlertDialog title={item.title} agree={renderAgree(item.id)} disagree="Anuluj" />
                         </span>
                       </BoxItems>
                     )
                   })}
                 </div>
                 <div>
-                  <h1>Zakończone zadania</h1>
+                <h1>Zakończone zadania</h1>
                   {completedItems.map(item => {
                     return (
                       <BoxItems id={item.title} style={theme} key={item.id}>
-                        <p onClick={() => {
-                          changeStatus(item.id, item.completed)
-                          dispatch(showErrorSnackbar('Zmieniłeś status zadania na niezakończone Panie!'))
-                          }}>{item.title}
-                        </p>
+                        <p>{item.title}</p>
                         <span>
-                        <p onClick={() => {
-                          setIsEdit(!isEdit)
-                            setTodoId(item.id)
-                          }}><EditIcon/></p>
-                        <AlertDialog title={item.title} agree={renderAgree(item.id)} disagree="Anuluj" />
+                          <div>
+                            <ArrowBackIcon onClick={() => {
+                            changeStatus(item.id, item.completed)
+                            dispatch(showErrorSnackbar('Cofnąłeś zadanie do nowych zadań Panie!'))
+                            }} />
+                          </div>
+                          <div onClick={() => {
+                            setIsEdit(!isEdit)
+                              setTodoId(item.id)
+                          }}><EditIcon/>
+                          </div>
+                          <AlertDialog title={item.title} agree={renderAgree(item.id)} disagree="Anuluj" />
                         </span>
                       </BoxItems>
                     )
@@ -104,10 +112,11 @@ const MainPage: FC<IProps> = ({ getTodoList, todos, addedTodo, deleteTodo, chang
                 </div>
               </Grid>
             </div>}
-          </ThemeContext.Consumer> : <EditForm onSubmit={
-                  (values) => {mainPageService.editSubmit(values, todoId)
-                  setIsEdit(!isEdit);
-                  }} />}
+        </ThemeContext.Consumer>
+         : <>
+          <EditForm onSubmit={(values) => { mainPageService.editSubmit(values, todoId); setIsEdit(!isEdit);}} /> 
+          <Button variant="contained" color="default" onClick={() => setIsEdit(!isEdit)} >Anuluj</Button>
+           </>}
     </Container>
   );
 };

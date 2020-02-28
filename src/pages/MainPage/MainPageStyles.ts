@@ -10,6 +10,11 @@ margin-left: ${myTheme.margin.auto};
 margin-right: ${myTheme.margin.auto};
 height: ${myTheme.height.h100vh};
 justify-content: ${myTheme.centerItems};
+button {
+  height: ${myTheme.height.h55};
+  padding: ${myTheme.padding.p5};
+  margin-left: ${myTheme.margin.m10};
+}
 `
 
 export const BoxItems = styled.div`
@@ -23,20 +28,23 @@ align-items: ${myTheme.centerItems};
 background: ${myTheme.colors.white};
 
 :hover {
-transform: ${myTheme.transform.scale};
+transform: ${myTheme.transform.scale.min};
 }
 transition: ${myTheme.transition.all05};
 span {
-display: ${myTheme.display.flex};
+  display: ${myTheme.display.flex};
 }
 div {
   margin: ${myTheme.margin.m10};
   cursor: ${myTheme.cursor};
+  transition: ${myTheme.transition.all05};
+  overflow-wrap: ${myTheme.overflow.breakWord};
+  :hover {
+    transform: ${myTheme.transform.scale.average};
+  }
 }
 p {
   margin: ${myTheme.margin.m10};
-  cursor: ${myTheme.cursor};
-  overflow-wrap: ${myTheme.overflow.breakWord};
 }
 `
 export const FlexCenter = styled.div`
