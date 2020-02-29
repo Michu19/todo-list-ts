@@ -1,14 +1,23 @@
-import { createStore, applyMiddleware, Store } from 'redux';
+import { createStore, applyMiddleware, Store, compose, Middleware } from 'redux';
 import thunk from 'redux-thunk';
 import { rootReducer } from '../reducers';
 import { IAppState } from '../actions/TodoActions';
 import { ISnackbar } from '../actions/SnackbarActions';
+import {createLogger } from 'redux-logger';
+import { TestMiddleware } from '../middlewares/apiMiddleware';
 
-let middleware = applyMiddleware(thunk);
+const middlewares: Middleware<any, any, any>[] = [];
+
+middlewares.push(TestMiddleware);
+middlewares.push(thunk);
+const loggerMiddleware = createLogger({
+   predicate: () => process.env.NODE_ENV === 'development',
+});
+middlewares.push(loggerMiddleware);
 
 export function configureStore(): Store<IAppState | ISnackbar, any> {
 
-   return createStore(rootReducer, middleware);
+   return createStore(rootReducer, compose(applyMiddleware(...middlewares)));
 
 }
 

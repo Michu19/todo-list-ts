@@ -1,9 +1,17 @@
+import { Middleware } from 'redux';
+import { createBrowserHistory } from 'history';
 
-export const apiMiddleware = async <T>(func: Function) => {
-  try{
-    return await func() as T;
+
+type State = { field: 'string' }
+const hashHistory = createBrowserHistory();
+
+
+export const TestMiddleware: Middleware = api => next => action => {
+  // Do stuff
+  try {
+    return next(action);
+  } catch (err) {
+    console.error('Caught an exception!', err);
+    hashHistory.push('dsadsa')
   }
-  catch(err){
-    //TODO: snackBar 
-  }
-} 
+};
