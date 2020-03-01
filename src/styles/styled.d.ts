@@ -9,6 +9,7 @@ declare module 'styled-components' {
       white: string;
       gray: string;
       brown: string;
+      purple: string;
     };
     display: {
       flex: string;
@@ -32,7 +33,10 @@ declare module 'styled-components' {
     spaceBetween: string;
     shadow: string;
     border: {
-      solid: string
+      solid: {
+        p1: string,
+        p14: string,
+      } 
     };
     overflow: {
       scroll: string;

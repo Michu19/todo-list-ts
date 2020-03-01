@@ -14,8 +14,15 @@ button {
   height: ${myTheme.height.h55};
   padding: ${myTheme.padding.p5};
   margin-left: ${myTheme.margin.m10};
+  margin-bottom: ${myTheme.margin.m10};
 }
 `
+export const ErrorMessage = styled.h1`
+font-size: ${myTheme.height.h100};
+color: ${myTheme.colors.purple};
+border: ${myTheme.border.solid.p14};
+`
+
 
 export const BoxItems = styled.div`
 color: ${myTheme.colors.main};
@@ -49,6 +56,7 @@ p {
 export const FlexCenter = styled.div`
 display: ${myTheme.display.flex};
 justify-content: ${myTheme.centerItems};
+align-items: ${myTheme.centerItems};
 `
 export const Grid = styled.div`
 display: ${myTheme.display.grid};

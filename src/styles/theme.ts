@@ -9,6 +9,7 @@ const myTheme: DefaultTheme = {
     white: '#f1f1f1',
     gray: '#888',
     brown: '#555',
+    purple: 'purple'
   },
 
   display: {
@@ -16,7 +17,10 @@ const myTheme: DefaultTheme = {
     grid: 'grid',
   },
   border: {
-    solid: '1px solid #000'
+    solid:  {
+      p1: '1px solid #000',
+      p14: '14px solid red'
+    }
   },
   padding: {
     p5: '5px 21px'

@@ -1,10 +1,7 @@
 import { Action } from 'redux';
-import axios from 'axios'; 
-import { ThunkAction } from 'redux-thunk';
-import { ActionCreator } from 'redux';
 import { Dispatch, Reducer } from 'react';
-import { apiService } from '../services/apiService';
 
+export const FETCH_TODO_LIST = 'FETCH_TODO_LIST';
 export const GET_TODO_LIST = 'GET_TODO_LIST';
 export const ADD_TODO = 'ADD_TODO';
 export const DELETE_TODO = 'DELETE_TODO';
@@ -26,7 +23,7 @@ export interface IAppState {
   readonly todoState: ITodolistState;
 }
 
-export interface GetTodoListAction extends Action<"GET_TODO_LIST"> {
+export interface FetchTodolistAction extends Action<"FETCH_TODO_LIST"> {
   todos: ITodo[];
 }
 export interface AddTodoAction extends Action<"ADD_TODO"> {
@@ -44,39 +41,23 @@ export interface UpdateTodoAction extends Action<'UPDATE_TODO'> {
 }
 
 export type TodoActions =
-  | GetTodoListAction
+  | FetchTodolistAction
   | AddTodoAction
   | DeleteTodoAction
   | ChangeStatusAction
   | UpdateTodoAction;
 
 
-export const jsonAxios = axios.create({
-    baseURL: 'https://jsonplaceholder.typicode.com',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json;charset=UTF-8',
-    }
-});
 
 
-
-
-export const getTodoList: ActionCreator<ThunkAction<Promise<GetTodoListAction>, ITodo[], null, GetTodoListAction>> = () =>{
-  return async (dispatch: Dispatch<GetTodoListAction>) =>{
-
-    const myApiService = new apiService();
-    const todos = await myApiService.getTodos() as ITodo[];
-
-    const getTodosAction: GetTodoListAction = {
-      todos,
-      type: GET_TODO_LIST
-    }
-    dispatch(getTodosAction);
-
-    return getTodosAction;
-  };
-};
+export const fetchData = (data: ITodo[]) =>{
+  return (dispatch: Dispatch<FetchTodolistAction>) => {
+    dispatch({
+      todos: data,
+      type: FETCH_TODO_LIST
+    })
+  }
+}
 
 export const addedTodo = (data: ITodo) => ({
   todos: data,
@@ -110,30 +91,26 @@ export const TodoReducer: Reducer<ITodolistState, TodoActions> = (
   action
 ) => {
   switch (action.type) {
-    case GET_TODO_LIST:
+    case FETCH_TODO_LIST:{
       return {
         ...state,
         todos: action.todos
       }
+    }
     case ADD_TODO: 
-    console.log("add")
       return {
         ...state,
         todos: [...state.todos, action.todos]
       }
     case DELETE_TODO:
-      console.log(action.id)
       return {
         todos: state.todos.filter(items => items.id !== action.id)
       }
     case CHANGE_STATUS:
-      console.log(action.completed);
-      console.log(action.id);
       return {
         todos: state.todos.map(item => (item.id === action.id ? { ...item, completed: !action.completed } : item))
       }
     case UPDATE_TODO:
-      console.log('update')
       return {
         todos: state.todos.map(item => (item.id === action.todos.id ?  {...item, title: action.todos.title } : item))
       }

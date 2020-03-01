@@ -1,17 +1,13 @@
 import { Middleware } from 'redux';
-import { createBrowserHistory } from 'history';
+import { history } from '../common/history';
 
 
-type State = { field: 'string' }
-const hashHistory = createBrowserHistory();
 
-
-export const TestMiddleware: Middleware = api => next => action => {
-  // Do stuff
-  try {
-    return next(action);
-  } catch (err) {
-    console.error('Caught an exception!', err);
-    hashHistory.push('dsadsa')
-  }
+export const ExceptionMiddleware: Middleware = api => next => action => {
+   try{
+     return next(action);
+   }
+   catch(err){
+     history.push('/error');
+   }
 };

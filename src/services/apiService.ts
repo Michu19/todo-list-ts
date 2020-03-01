@@ -17,9 +17,7 @@ export class apiService {
   }
 
   async getTodos(): Promise<ITodo[]>{
-    return await this.axios.get<ITodo[]>("/todos").then( (res) =>{
-      
-        return res.data;
-      });
+    return await this.axios.get<ITodo[]>("/todos").then( (res) => res.data);
+
   }
 }
